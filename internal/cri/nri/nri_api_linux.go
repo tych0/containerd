@@ -835,6 +835,23 @@ func (c *criContainer) GetOOMScoreAdj() *int {
 	return c.spec.Process.OOMScoreAdj
 }
 
+func (c *criContainer) GetSeccompPolicy() *string {
+	if c.spec.Linux == nil || c.spec.Linux.Seccomp == nil {
+		return nil
+	}
+
+	// serialize this to a string for now; obviously we want to support a structure here
+	theJson, err := json.Marshal(c.spec.Linux.Seccomp)
+	if err != nil {
+		theErr := fmt.Errorf("problem marshalling seccomp policy %v", err).Error()
+		return &theErr
+	}
+
+	strJson := string(theJson)
+	return &strJson
+
+}
+
 func (c *criContainer) GetCgroupsPath() string {
 	if c.spec.Linux == nil {
 		return ""
