@@ -828,6 +828,16 @@ func (c *criContainer) GetLinuxResources() *api.LinuxResources {
 	return api.FromOCILinuxResources(c.spec.Linux.Resources, c.spec.Annotations)
 }
 
+func (c *criContainer) GetSeccompPolicy() string {
+	jsonData, err := json.Marshal(c.spec.Linux.Seccomp)
+	if err != nil {
+		log.L.Errorf("can't marshal seccomp policy %v; %v", err, c.spec.Linux.Seccomp)
+		return "{}"
+	}
+
+	return string(jsonData)
+}
+
 func (c *criContainer) GetOOMScoreAdj() *int {
 	if c.spec.Process == nil {
 		return nil
