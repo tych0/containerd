@@ -17,6 +17,7 @@
 package generate
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -117,6 +118,9 @@ func (g *Generator) Adjust(adjust *nri.ContainerAdjustment) error {
 	g.AdjustDevices(adjust.GetLinux().GetDevices())
 	g.AdjustCgroupsPath(adjust.GetLinux().GetCgroupsPath())
 	g.AdjustOomScoreAdj(adjust.GetLinux().GetOomScoreAdj())
+	if err := g.AdjustSeccompPolicy(adjust.GetLinux().GetSeccompPolicy()); err != nil {
+		return err
+	}
 
 	resources := adjust.GetLinux().GetResources()
 	if err := g.AdjustResources(resources); err != nil {
@@ -330,6 +334,21 @@ func (g *Generator) AdjustOomScoreAdj(score *nri.OptionalInt) {
 	if score != nil {
 		g.SetProcessOOMScoreAdj(int(score.Value))
 	}
+}
+
+func (g *Generator) AdjustSeccompPolicy(policy *nri.OptionalString) error {
+	if policy == nil {
+		return nil
+	}
+
+	seccomp := &rspec.LinuxSeccomp{}
+	err := json.Unmarshal([]byte(policy.Value), &seccomp)
+	if err != nil {
+		return err
+	}
+
+	g.Config.Linux.Seccomp = seccomp
+	return nil
 }
 
 // AdjustDevices adjusts the (Linux) devices in the OCI Spec.
