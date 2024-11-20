@@ -253,6 +253,7 @@ func (l *local) CreateContainer(ctx context.Context, pod PodSandbox, ctr Contain
 		// TODO(klihub): we ignore pre-create update failures for now
 		log.G(ctx).WithError(err).Warnf("pre-create update failed")
 	}
+	log.G(ctx).Errorf("TYCHO: created container, got adjustment %v", response.Adjust)
 
 	return response.Adjust, nil
 }

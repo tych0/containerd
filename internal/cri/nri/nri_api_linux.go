@@ -119,6 +119,7 @@ func (a *API) RemovePodSandbox(ctx context.Context, criPod *sstore.Sandbox) erro
 func (a *API) CreateContainer(ctx context.Context, ctrs *containers.Container, spec *runtimespec.Spec) (*api.ContainerAdjustment, error) {
 	ctr := a.nriContainer(ctrs, spec)
 
+	log.G(ctx).Errorf("TYCHO: cri/nri CreateContainer")
 	criPod, err := a.cri.SandboxStore().Get(ctr.GetPodSandboxID())
 	if err != nil {
 		return nil, err
@@ -330,6 +331,7 @@ func (a *API) WithContainerAdjustment() containerd.NewContainerOpts {
 		sgen := generate.Generator{Config: spec}
 		ngen := nrigen.SpecGenerator(&sgen, resourceCheckOpt, rdtResolveOpt, blkioResolveOpt)
 
+		log.G(ctx).Errorf("TYCHO: adjusting in containerd's NRI")
 		err = ngen.Adjust(adjust)
 		if err != nil {
 			return fmt.Errorf("failed to NRI-adjust container Spec: %w", err)
