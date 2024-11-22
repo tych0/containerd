@@ -168,7 +168,7 @@ github.com/containerd/imgcrypt/v2/images/encryption
 ## explicit; go 1.20
 github.com/containerd/log
 github.com/containerd/log/logtest
-# github.com/containerd/nri v0.8.0
+# github.com/containerd/nri v0.8.0 => github.com/tych0/nri v0.0.0-20241122090728-8032e930fa0f
 ## explicit; go 1.21
 github.com/containerd/nri
 github.com/containerd/nri/pkg/adaptation
@@ -879,3 +879,4 @@ tags.cncf.io/container-device-interface/pkg/parser
 # tags.cncf.io/container-device-interface/specs-go v0.8.0
 ## explicit; go 1.19
 tags.cncf.io/container-device-interface/specs-go
+# github.com/containerd/nri => github.com/tych0/nri v0.0.0-20241122090728-8032e930fa0f
