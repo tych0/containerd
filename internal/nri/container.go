@@ -45,7 +45,7 @@ type LinuxContainer interface {
 	GetLinuxResources() *nri.LinuxResources
 	GetOOMScoreAdj() *int
 	GetCgroupsPath() string
-	GetSeccompPolicy() string
+	GetSeccompPolicy() *nri.LinuxSeccomp
 }
 
 func commonContainerToNRI(ctr Container) *nri.Container {
